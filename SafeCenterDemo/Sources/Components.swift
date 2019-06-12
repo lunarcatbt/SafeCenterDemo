@@ -9,8 +9,38 @@
 import UIKit
 import CoreGraphics
 
+protocol Selectable {
+    var isSelected: Bool { get set }
+    
+    init(radius: CGFloat)
+}
+
+extension Selectable where Self:UIView {
+    init(radius: CGFloat) {
+        let frame = CGRect(origin: .zero, size: CGSize(width: radius*2, height: radius*2))
+        self.init(frame: frame)
+        backgroundColor = UIColor.clear
+    }
+}
+
+class CircleMadeByImg: UIView, Selectable {
+    var isSelected: Bool {
+        didSet {
+        }
+    }
+    
+    override init(frame: CGRect) {
+        self.isSelected = false
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 /// A customizable circle that aligned together form the input for pattern lock
-class Circle: UIView {
+class Circle: UIView, Selectable {
     
     // *** Customizable attributes ***
     var outerColor = UIColor.magenta {
@@ -39,7 +69,7 @@ class Circle: UIView {
         super.init(frame: frame)
     }
     
-    convenience init(radius: CGFloat) {
+    required convenience init(radius: CGFloat) {
         let frame = CGRect(origin: .zero, size: CGSize(width: radius*2, height: radius*2))
         self.init(frame: frame)
         backgroundColor = UIColor.clear
