@@ -15,7 +15,7 @@ public class LockScreen: UIView {
     private let kAlter2 = 4321
     private let kTagId  = 222333
     
-    private var selectedCircle: Circle?
+    private var selectedCircle: CircleMadeByImg?
     private var patternView: PatternView!
     private var oldCellIndex: Int = -1
     private var currentCellIndex: Int = -1
@@ -86,11 +86,7 @@ public class LockScreen: UIView {
         let radius = config.circleRadiusScale == 0 ? grid/2 : grid/Double(config.circleRadiusScale)
 
         for index in 0..<numberOfCircles {
-            let circle = Circle(radius: CGFloat(radius))
-            circle.outerColor = config.circleOuterRingColor
-            circle.innercolor = config.circleInnerRingColor
-            circle.highlightColor = config.circleHighlightColor
-            circle.lineWidth = config.lineWidth
+            let circle = CircleMadeByImg(radius: CGFloat(radius))
             
             let row = index/size
             let col = index % size
@@ -142,18 +138,18 @@ public class LockScreen: UIView {
         resetScreen()
     }
     
-    func cell(at index: Int) -> Circle? {
+    func cell(at index: Int) -> CircleMadeByImg? {
         guard index >= 0 && index < numberOfCircles else { return nil }
-        return viewWithTag((index/size+kSeed)*kTagId+index % size + kSeed) as? Circle
+        return viewWithTag((index/size+kSeed)*kTagId+index % size + kSeed) as? CircleMadeByImg
     }
     
-    func index(of circle: Circle) -> Int {
+    func index(of circle: CircleMadeByImg) -> Int {
         return (circle.tag/kTagId - kSeed)*size + (circle.tag % kTagId - kSeed)
     }
     
     func index(_ point: CGPoint) -> Int {
         for view in self.subviews {
-            if let circle = view as? Circle, circle.frame.contains(point) {
+            if let circle = view as? CircleMadeByImg, circle.frame.contains(point) {
                 if circle.isSelected == false {
                     circle.isSelected = true
                     currentCellIndex = index(of: circle)
@@ -228,7 +224,7 @@ public class LockScreen: UIView {
     
     func resetScreen() {
         for view in self.subviews {
-            if let circle = view as? Circle { circle.isSelected = false }
+            if let circle = view as? CircleMadeByImg { circle.isSelected = false }
         }
         finalLines = []
         drawnLines = []

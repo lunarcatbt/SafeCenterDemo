@@ -24,14 +24,30 @@ extension Selectable where Self:UIView {
 }
 
 class CircleMadeByImg: UIView, Selectable {
-    var isSelected: Bool {
+    var outterCircle = UIImageView()
+    var innerCircle = UIImageView()
+    var isSelected: Bool = false {
         didSet {
+            innerCircle.isHidden = !isSelected
         }
     }
     
     override init(frame: CGRect) {
-        self.isSelected = false
         super.init(frame: frame)
+        
+        self.addSubview(outterCircle)
+        self.addSubview(innerCircle)
+        
+        innerCircle.isHidden = true
+        
+        outterCircle.frame = frame
+        innerCircle.frame = frame
+        
+        outterCircle.center = self.center
+        innerCircle.center = self.center
+        
+        outterCircle.image = UIImage(named: "circle_normal")
+        innerCircle.image = UIImage(named: "circle_hignlight")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -69,11 +85,11 @@ class Circle: UIView, Selectable {
         super.init(frame: frame)
     }
     
-    required convenience init(radius: CGFloat) {
-        let frame = CGRect(origin: .zero, size: CGSize(width: radius*2, height: radius*2))
-        self.init(frame: frame)
-        backgroundColor = UIColor.clear
-    }
+//    required convenience init(radius: CGFloat) {
+//        let frame = CGRect(origin: .zero, size: CGSize(width: radius*2, height: radius*2))
+//        self.init(frame: frame)
+//        backgroundColor = UIColor.clear
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
